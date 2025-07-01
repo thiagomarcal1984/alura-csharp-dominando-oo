@@ -20,3 +20,22 @@
 > ```bash
 > dotnet run --project ScreenSound
 > ```
+
+## Abrindo o projeto
+As aulas propõem a organização das classes de modelo em um diretório separado. Portanto, vamos criar dentro do diretório do _projeto_ ScreenSound (não confundir com o diretório da _solução_ ScreenSound) chamado `Modelos` e mover as classes de modelo para lá:
+```
+D:\alura\csharp-dominando-oo>cd ScreenSound
+
+D:\alura\csharp-dominando-oo\ScreenSound>mkdir Modelos
+
+D:\alura\csharp-dominando-oo\ScreenSound>move Album.cs Modelos
+        1 arquivo(s) movido(s).
+
+D:\alura\csharp-dominando-oo\ScreenSound>move Banda.cs Modelos
+        1 arquivo(s) movido(s).
+
+D:\alura\csharp-dominando-oo\ScreenSound>move Musica.cs Modelos
+        1 arquivo(s) movido(s).
+
+D:\alura\csharp-dominando-oo\ScreenSound>
+```
