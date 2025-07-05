@@ -290,3 +290,21 @@ internal class Program
 ```
 Em versões anteriores do .NET essa classe `Program` e o método `Main` eram obrigatórios, mas agora não é mais.
 
+## Faça como eu fiz: o poder do encapsulamento
+Vamos criar uma regra no construtor que permita apenas valores entre 0 e 10 na classe `Avaliacao`:
+
+```CSharp
+namespace ScreenSound.Modelos;
+
+internal class Avaliacao
+{
+    public Avaliacao(int nota)
+    {
+        if (nota > 10) nota = 10;
+        if (nota < 0) nota = 0;
+        Nota = nota;
+    }
+    public int Nota { get; }
+    // Resto do código
+}
+```
