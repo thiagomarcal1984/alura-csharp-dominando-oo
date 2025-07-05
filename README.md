@@ -187,3 +187,52 @@ internal class Avaliacao
     public int Nota { get; }
 }
 ```
+## Usando o novo tipo
+A classe `Banda` vai usar a classe `Avaliacao` desta forma:
+
+```CSharp
+namespace ScreenSound.Modelos;
+internal class Banda
+{
+    private List<Album> albuns = new List<Album>();
+    private List<Avaliacao> notas = new List<Avaliacao>();
+
+    // Resto do código
+
+    public double Media {
+        get {
+            if (notas.Count == 0) return 0;
+            else return notas.Average(a => a.Nota);
+        }
+    } 
+
+    // Resto do código
+    public void AdicionarNota(Avaliacao nota)
+    {
+        notas.Add(nota);
+    }
+
+    // Resto do código
+}
+```
+
+E o programa principal vai adaptar os parâmetros do método `AdicionarNota` da classe `Banda` de número inteiro para um objeto da classe `Avaliacao`:
+```CSharp
+// Program.cs
+Banda ira = new Banda("Ira!");
+ira.AdicionarNota(new Avaliacao(10));
+ira.AdicionarNota(new Avaliacao(8));
+ira.AdicionarNota(new Avaliacao(6));
+// Resto do código
+void AvaliarUmaBanda()
+{
+    // Resto do código
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        // Resto do código
+        bandasRegistradas[nomeDaBanda].AdicionarNota(new Avaliacao(nota));
+        // Resto do código
+    }
+}
+// Resto do código
+```
