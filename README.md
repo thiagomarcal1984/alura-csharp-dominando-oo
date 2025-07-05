@@ -96,3 +96,75 @@ Banda beatles = new Banda("The Beatles");
 >     new ScreenSound.Modelos.Banda("The Beatles");
 > ```
 > Note como é mais verboso escrever código sem importar os namespaces com `using`.
+
+## OO no Program.cs
+Os objetos do tipo `Banda` e `Album` vão substituir as implementações anteriores do programa principal:
+
+```CSharp
+// Program.cs
+// Resto do código
+Banda ira = new Banda("Ira!");
+ira.AdicionarNota(10);
+ira.AdicionarNota(8);
+ira.AdicionarNota(6);
+Banda beatles = new Banda("The Beatles");
+
+Dictionary<string, Banda> bandasRegistradas = new();
+bandasRegistradas.Add(ira.Nome, ira);
+bandasRegistradas.Add(beatles.Nome, beatles);
+// Resto do código
+void RegistrarAlbum()
+{
+    // Resto do código
+    string nomeDaBanda = Console.ReadLine()!;
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        Console.Write("Agora digite o título do álbum: ");
+        string tituloAlbum = Console.ReadLine()!;
+        bandasRegistradas[nomeDaBanda].AdicionarAlbum(new Album(tituloAlbum));
+        Console.WriteLine($"O álbum {tituloAlbum} de {nomeDaBanda} foi registrado com sucesso!");
+    }
+    else
+    {
+        Console.WriteLine($"\nA banda {nomeDaBanda} não foi encontrada!");
+    }
+}
+// Resto do código
+void RegistrarBanda()
+{
+    // Resto do código
+    string nomeDaBanda = Console.ReadLine()!;
+    Banda banda = new Banda(nomeDaBanda);
+    bandasRegistradas.Add(nomeDaBanda, banda);
+}
+// Resto do código
+void AvaliarUmaBanda()
+{
+    // Resto do código
+    string nomeDaBanda = Console.ReadLine()!;
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        Console.Write($"Qual a nota que a banda {nomeDaBanda} merece: ");
+        int nota = int.Parse(Console.ReadLine()!);
+        Banda banda = bandasRegistradas[nomeDaBanda];
+        bandasRegistradas[nomeDaBanda].AdicionarNota(nota);
+        // Resto do código
+    }
+    else
+    {
+        // Resto do código
+    }
+}
+// Resto do código
+void ExibirDetalhes()
+{
+    // Resto do código
+    string nomeDaBanda = Console.ReadLine()!;
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        Banda banda = bandasRegistradas[nomeDaBanda];
+        Console.WriteLine($"\nA média da banda {nomeDaBanda} é {banda.Media}.");
+    }
+    // Resto do código
+}
+```
