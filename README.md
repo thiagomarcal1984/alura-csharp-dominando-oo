@@ -308,3 +308,52 @@ internal class Avaliacao
     // Resto do código
 }
 ```
+# Comportamentos comuns aos menus
+## Isolando cada opção
+Vamos enviar cada método de menu para sua respectiva classe no novo namespace `ScreenSound.Menus`:
+
+```CSharp
+// Menus\MenuExibirDetalhes.cs
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Menus;
+internal class MenuExibirDetalhes
+{
+    void ExibirTituloDaOpcao(string titulo)
+    {
+        int quantidadeDeLetras = titulo.Length;
+        string asteriscos = string.Empty.PadLeft(quantidadeDeLetras, '*');
+        Console.WriteLine(asteriscos);
+        Console.WriteLine(titulo);
+        Console.WriteLine(asteriscos + "\n");
+    }
+
+    public void Executar(Dictionary<string, Banda> bandasRegistradas)
+    {
+        // Resto do código
+    }
+}
+```
+
+Agora, vamos substituir no programa principal o método para chamar o menu de exibição de detalhes:
+```CSharp
+// Program.cs
+using ScreenSound.Menus;
+
+// Resto do código
+void ExibirOpcoesDoMenu()
+{
+    // Resto do código
+    switch (opcaoEscolhidaNumerica)
+    {
+        // Resto do código
+        case 5:
+            new MenuExibirDetalhes().Executar(bandasRegistradas);
+            ExibirOpcoesDoMenu();
+            break;
+        // Resto do código
+    }
+    // Resto do código
+}
+```
+Depois faremos essa mesma refatoração com as demais funções presentes no programa principal.
