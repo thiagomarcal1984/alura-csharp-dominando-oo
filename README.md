@@ -276,3 +276,17 @@ void AvaliarUmaBanda()
 }
 ```
 > Note que a mensagem de confirmação da inserção da avaliação/nota usa a propriedade `Nota` do objeto `nota` de classe `Avaliacao`. Antes a propriedade `Nota` não era referenciada, e, portanto, ao imprimir essa linha, aparecia o nome da classe ao invés da nota em si.
+
+## Classe Program
+Implicitamente, o arquivo `Program.cs` declara uma classe `Program` com o método `Main`, com esta estrutura:
+```CSharp
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        // Código.
+    }
+}
+```
+Em versões anteriores do .NET essa classe `Program` e o método `Main` eram obrigatórios, mas agora não é mais.
+
