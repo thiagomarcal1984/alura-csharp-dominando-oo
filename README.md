@@ -236,3 +236,43 @@ void AvaliarUmaBanda()
 }
 // Resto do código
 ```
+## Melhorando avaliação
+Vamos acrescentar um método de conversão de string para `Avaliacao`:
+```CSharp
+// Avaliacao.cs
+namespace ScreenSound.Modelos;
+
+internal class Avaliacao
+{
+    // Resto do código
+
+    public static Avaliacao Parse(string texto)
+    {
+        return new Avaliacao(int.Parse(texto));
+    }
+}
+```
+> Note que o método `Parse` foi declarado como `static`. Isso permite o uso do método sem instanciar um objeto da classe `Avaliacao`.
+
+Vamos agora mudar o programa principal para usar esse método:
+```CSharp
+// Program.cs
+// Resto do código
+void AvaliarUmaBanda()
+{
+    // Resto do código
+    string nomeDaBanda = Console.ReadLine()!;
+    if (bandasRegistradas.ContainsKey(nomeDaBanda))
+    {
+        Console.Write($"Qual a nota que a banda {nomeDaBanda} merece: ");
+        Avaliacao nota = Avaliacao.Parse(Console.ReadLine()!);
+        Banda banda = bandasRegistradas[nomeDaBanda];
+        bandasRegistradas[nomeDaBanda].AdicionarNota(nota);
+        Console.WriteLine($"\nA nota {nota.Nota} foi registrada com sucesso para a banda {nomeDaBanda}");
+        Thread.Sleep(2000);
+        Console.Clear();
+        ExibirOpcoesDoMenu();
+    }
+}
+```
+> Note que a mensagem de confirmação da inserção da avaliação/nota usa a propriedade `Nota` do objeto `nota` de classe `Avaliacao`. Antes a propriedade `Nota` não era referenciada, e, portanto, ao imprimir essa linha, aparecia o nome da classe ao invés da nota em si.

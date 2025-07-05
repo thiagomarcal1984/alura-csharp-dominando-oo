@@ -7,4 +7,9 @@ internal class Avaliacao
         Nota = nota;
     }
     public int Nota { get; }
+
+    public static Avaliacao Parse(string texto)
+    {
+        return new Avaliacao(int.Parse(texto));
+    }
 }
