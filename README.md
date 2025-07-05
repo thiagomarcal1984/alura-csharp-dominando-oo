@@ -168,3 +168,22 @@ void ExibirDetalhes()
     // Resto do código
 }
 ```
+# Nova classe Avaliacao
+## Visibilidade internal
+A visibilidade `internal` se aplica apenas ao próprio projeto. Por exemplo: a classe `Avaliacao` que vamos criar só fica visível dentro do projeto que a contém, o `ScreenSound`.
+
+No código, passaremos a usar todas as classes de modelo com o modificador de visibilidade `internal`.
+
+Código novo: classe `Avaliacao`:
+```CSharp
+namespace ScreenSound.Modelos;
+
+internal class Avaliacao
+{
+    public Avaliacao(int nota)
+    {
+        Nota = nota;
+    }
+    public int Nota { get; }
+}
+```
