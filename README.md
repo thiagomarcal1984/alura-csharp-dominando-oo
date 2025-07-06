@@ -423,3 +423,106 @@ void ExibirOpcoesDoMenu()
     // Resto do código
 }
 ```
+## Reduzindo mais linhas / Removendo o switch
+
+Par reduzir as linhas de código, vamos terminar a migração das funções do programa principal para as seguintes classes:
+1. MenuAvaliarBanda;
+2. MenuExibirDetalhes;
+3. MenuMostrarBanda;
+4. MenuRegistrarAlbum;
+5. MenuRegistrarBanda;
+5. MenuSair.
+
+Todas elas vão herdar da superclasse `Menu`, que vai conter uma implementação comum do método `Executar`:
+```CSharp
+// Menus\Menu.cs
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Menus;
+internal class Menu
+{
+    public void ExibirTituloDaOpcao(string titulo)
+    {
+        int quantidadeDeLetras = titulo.Length;
+        string asteriscos = string.Empty.PadLeft(quantidadeDeLetras, '*');
+        Console.WriteLine(asteriscos);
+        Console.WriteLine(titulo);
+        Console.WriteLine(asteriscos + "\n");
+    }
+
+    public virtual void Executar(Dictionary<string, Banda> bandasRegistradas)
+    {
+        Console.Clear();
+    }
+}
+```
+> Note que o método `Executar` está com a palavra reservada `virtual`. Essa palavra reservada permite a sobrescrita do método pelas descendentes desta superclasse. Toda classe filha deve usar a palavra reservada `override` para sobrepor o método da superclasse.
+> 
+> - Use `virtual` quando você quer fornecer uma implementação padrão, mas permite que classes derivadas a modifiquem.
+> 
+> - Use `abstract` quando você quer forçar as classes derivadas a implementar o método, pois não faz sentido ter uma implementação padrão.
+
+Implementação de uma das subclasses de `Menu`:
+```CSharp
+// Menus\MenuMostrarBanda.cs
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Menus;
+
+internal class MenuMostrarBanda : Menu
+{
+    public override void Executar(Dictionary<string, Banda> bandasRegistradas)
+    {
+        base.Executar(bandasRegistradas);
+        ExibirTituloDaOpcao("Exibindo todas as bandas registradas na nossa aplicação");
+
+        foreach (string banda in bandasRegistradas.Keys)
+        {
+            Console.WriteLine($"Banda: {banda}");
+        }
+
+        Console.WriteLine("\nDigite uma tecla para voltar ao menu principal");
+        Console.ReadKey();
+        Console.Clear();
+    }
+}
+```
+> Note na palavra reservada `base`: ela corresponde ao próprio objeto acrescido das implementações realizadas na superclasse (`Menu`, no caso). No exemplo, a sobrecarga do método `Executar` executa o mesmo método da superclasse e personaliza seu comportamento.
+
+Mudanças no programa principal:
+```CSharp
+// Program.cs
+// Resto do código
+Dictionary<int, Menu> opcoes = new();
+opcoes.Add(1, new MenuRegistrarBanda());
+opcoes.Add(2, new MenuRegistrarAlbum());
+opcoes.Add(3, new MenuMostrarBanda());
+opcoes.Add(4, new MenuAvaliarBanda());
+opcoes.Add(5, new MenuExibirDetalhes());
+opcoes.Add(-1, new MenuSair());
+
+// Resto do código
+void ExibirOpcoesDoMenu()
+{
+    // Resto do código
+    int opcaoEscolhidaNumerica;
+    while (true)
+    {
+        Console.Write("\nDigite a sua opção: ");
+        string opcaoEscolhida = Console.ReadLine()!;
+        opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
+        if(!opcoes.ContainsKey(opcaoEscolhidaNumerica))
+        {
+            Console.WriteLine("Opção inválida");
+        }
+        else break;
+    } 
+
+    opcoes[opcaoEscolhidaNumerica].Executar(bandasRegistradas);
+
+    if (opcaoEscolhidaNumerica != -1) ExibirOpcoesDoMenu();
+}
+
+ExibirOpcoesDoMenu();
+```
+> Veja o quanto o código foi simplificado após o uso do `Dictionary`: ele poupou o uso do `switch/case`.
