@@ -357,3 +357,69 @@ void ExibirOpcoesDoMenu()
 }
 ```
 Depois faremos essa mesma refatoração com as demais funções presentes no programa principal.
+
+## Identificando semelhanças
+Antes de refatorar as funções do programa principal para as classes de menu, precisamos criar uma superclasse da qual os menus herdarão o método `ExibirTituloOpcao`:
+```CSharp
+// Menus\Menu.cs
+namespace ScreenSound.Menus;
+
+internal class Menu
+{
+    public void ExibirTituloDaOpcao(string titulo)
+    {
+        int quantidadeDeLetras = titulo.Length;
+        string asteriscos = string.Empty.PadLeft(quantidadeDeLetras, '*');
+        Console.WriteLine(asteriscos);
+        Console.WriteLine(titulo);
+        Console.WriteLine(asteriscos + "\n");
+    }
+}
+```
+Criação da nova classe:
+```CSharp
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Menus;
+
+internal class MenuAvaliarBanda : Menu
+{
+    public void Executar(Dictionary<string, Banda> bandasRegistradas)
+    {
+        Console.Clear();
+        ExibirTituloDaOpcao("Avaliar banda");
+        // Resto do código
+    }
+}
+```
+> Note que depois da declaração da classe usamos a seguinte notação para aplicar herança: `MenuAvaliarBanda : Menu`. Perceba os dois pontos antes da superclasse.
+> 
+> Note também que o método `ExibirTituloDaOpcao` não está declarado em `MenuAvaliarBanda`, porque ele já está declarado e implementado na superclasse `Menu`.
+
+Mudança no programa principal:
+```CSharp
+// Program.cs
+// Resto do código
+void ExibirOpcoesDoMenu()
+{
+    // Resto do código
+    Console.Write("\nDigite a sua opção: ");
+    string opcaoEscolhida = Console.ReadLine()!;
+    int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
+
+    switch (opcaoEscolhidaNumerica)
+    {
+        // Resto do código
+        case 4:
+            new MenuAvaliarBanda().Executar(bandasRegistradas);
+            ExibirOpcoesDoMenu();
+            break;
+        case 5:
+            new MenuExibirDetalhes().Executar(bandasRegistradas);
+            ExibirOpcoesDoMenu();
+            break;
+        // Resto do código
+    }
+    // Resto do código
+}
+```
