@@ -566,3 +566,94 @@ internal class Banda: IAvaliavel
 }
 ```
 > Note o conteúdo no fim da declaração da classe: `internal class Banda: IAvaliavel`. Para forçar a implementação da interface, use `: Interface` após a declaração da classe.
+
+## IAvaliavel em álbum e música / Menu para avaliar álbum
+Vamos implementar a interface `IAvaliavel` na classe `Album`:
+```CSharp
+// Modelos\Album.cs
+namespace ScreenSound.Modelos;
+
+internal class Album: IAvaliavel
+{
+    private List<Musica> musicas = new List<Musica>();
+    private List<Avaliacao> notas = new();
+    // Resto do código
+    public double Media {
+        get {
+            if (notas.Count == 0) return 0;
+            else return notas.Average(a => a.Nota);
+        }
+    }
+
+    public void AdicionarNota(Avaliacao nota)
+    {
+        notas.Add(nota);
+    }
+    // Resto do código
+}
+```
+
+Agora, vamos criar um menu para avaliar álbuns:
+```CSharp
+// Menus\MenuAvaliarAlbum.cs
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Menus;
+
+internal class MenuAvaliarAlbum : Menu
+{
+    public override void Executar(Dictionary<string, Banda> bandasRegistradas)
+    {
+        base.Executar(bandasRegistradas);
+        ExibirTituloDaOpcao("Avaliar álbum");
+        Console.Write("Digite o nome da banda que deseja avaliar: ");
+        string nomeDaBanda = Console.ReadLine()!;
+        if (bandasRegistradas.ContainsKey(nomeDaBanda))
+        {
+            Banda banda = bandasRegistradas[nomeDaBanda];
+            Console.Write("Agora digite o título do álbum: ");
+            string tituloAlbum = Console.ReadLine()!;
+            if (banda.Albuns.Any(a => a.Nome == tituloAlbum))
+            {
+                Album album = banda.Albuns.First(a => a.Nome == tituloAlbum);
+                Console.Write($"Qual a nota que o álbum {tituloAlbum} merece: ");
+                Avaliacao nota = Avaliacao.Parse(Console.ReadLine()!);
+                album.AdicionarNota(nota);
+                Console.WriteLine($"\nA nota {nota.Nota} foi registrada com sucesso para o álbum {tituloAlbum}");
+            }
+            else 
+            {
+                Console.WriteLine($"\nO álbum {tituloAlbum} não foi encontrado!");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"\nA banda {nomeDaBanda} não foi encontrada!");
+        }
+        Console.WriteLine("Digite uma tecla para voltar ao menu principal");
+        Console.ReadKey();
+        Console.Clear();
+    }
+}
+```
+Finalmente, vamos incluir esse novo menu no programa principal:
+```CSharp
+// Program.cs
+// Resto do código
+Dictionary<int, Menu> opcoes = new();
+// Resto do código
+opcoes.Add(4, new MenuAvaliarBanda());
+opcoes.Add(5, new MenuAvaliarAlbum());
+opcoes.Add(6, new MenuExibirDetalhes());
+opcoes.Add(-1, new MenuSair());
+// Resto do código
+void ExibirOpcoesDoMenu()
+{
+    // Resto do código
+    Console.WriteLine("Digite 4 para avaliar uma banda");
+    Console.WriteLine("Digite 5 para avaliar um álbum");
+    Console.WriteLine("Digite 6 para exibir os detalhes de uma banda");
+    // Resto do código
+}
+ExibirOpcoesDoMenu();
+```
