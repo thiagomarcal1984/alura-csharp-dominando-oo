@@ -17,7 +17,7 @@ internal class Banda: IAvaliavel
         }
     } 
 
-    public List<Album> Albuns => albuns;
+    public IEnumerable<Album> Albuns => albuns;
 
     public void AdicionarAlbum(Album album)
     {

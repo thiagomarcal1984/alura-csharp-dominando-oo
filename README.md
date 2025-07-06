@@ -685,3 +685,24 @@ internal class MenuExibirDetalhes : Menu
     }
 }
 ```
+## Faça como eu fiz: protegendo nossa lógica
+A classe `List` implementa a interface `IEnumerable`. Mas o método `Clear` não é declarado em `IEnumerable`. Usar essa interface como retorno nos getters aumenta a proteção sobre o código de modelo!
+
+Novo código da classe `Banda`:
+```CSharp
+// Modelos\Banda.cs
+namespace ScreenSound.Modelos;
+internal class Banda: IAvaliavel
+{
+    private List<Album> albuns = new List<Album>();
+    // Resto do código
+    public IEnumerable<Album> Albuns => albuns;
+
+    public void AdicionarAlbum(Album album)
+    {
+        albuns.Add(album);
+    }
+    // Resto do código
+}
+```
+Perceba que a propriedade `Albuns` não é mais uma `List`, mas sim um `IEnumerable`. Assim, as operações sobre a lista ficam a cargo exclusivamente dos métodos da classe `Banda`, e em nenhum outro lugar.
