@@ -526,3 +526,43 @@ void ExibirOpcoesDoMenu()
 ExibirOpcoesDoMenu();
 ```
 > Veja o quanto o código foi simplificado após o uso do `Dictionary`: ele poupou o uso do `switch/case`.
+
+# Alternativa para anexar semelhanças
+## Álbuns e músicas avaliáveis
+Vamos aprender a usar interfaces. Por convenção, no C# toda interface é prefixada pela letra `I`. 
+
+Agora vamos criar a interface `IAvaliavel` e implementá-la na classe `Banda`:
+
+```CSharp
+// Modelos\IAvaliavel.cs
+namespace ScreenSound.Modelos;
+
+internal interface IAvaliavel
+{
+    void AdicionarNota(Avaliacao nota);
+    double Media {get;}
+}
+```
+> Note que `AdicionarNota` é um método, enquanto `Media` é uma propriedade. Esses dois atributos devem ser referenciados em qualquer classe que implemente esta interface.
+
+```CSharp
+// Modelos\Banda.cs
+namespace ScreenSound.Modelos;
+internal class Banda: IAvaliavel
+{
+    // Resto do código
+    public double Media {
+        get {
+            if (notas.Count == 0) return 0;
+            else return notas.Average(a => a.Nota);
+        }
+    } 
+    // Resto do código
+    public void AdicionarNota(Avaliacao nota)
+    {
+        notas.Add(nota);
+    }
+    // Resto do código
+}
+```
+> Note o conteúdo no fim da declaração da classe: `internal class Banda: IAvaliavel`. Para forçar a implementação da interface, use `: Interface` após a declaração da classe.
