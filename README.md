@@ -657,3 +657,31 @@ void ExibirOpcoesDoMenu()
 }
 ExibirOpcoesDoMenu();
 ```
+## Completando o novo menu
+A classe `MenuExibirDetalhes` agora mostrará a média de notas dos álbuns de uma banda, conforme código a seguir:
+
+```CSharp
+// Menus\MenuExibirDetalhes.cs
+using ScreenSound.Modelos;
+
+namespace ScreenSound.Menus;
+
+internal class MenuExibirDetalhes : Menu
+{
+    public override void Executar(Dictionary<string, Banda> bandasRegistradas)
+    {
+        // Resto do código
+        if (bandasRegistradas.ContainsKey(nomeDaBanda))
+        {
+            Banda banda = bandasRegistradas[nomeDaBanda];
+            Console.WriteLine($"\nA média da banda {nomeDaBanda} é {banda.Media}.");
+            Console.WriteLine($"\nDiscografia:");
+            foreach(Album album in banda.Albuns)
+            {
+                Console.WriteLine($"{album.Nome} -> {album.Media}");
+            }
+        }
+        // Resto do código
+    }
+}
+```
